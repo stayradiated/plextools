@@ -1,0 +1,13 @@
+{
+  "name": "plextools",
+  "version": "1.0.0",
+  "description": "Tools for dealing with a plex server",
+  "main": "index.js",
+  "author": "George Czabania <george@czabania.com>",
+  "license": "MIT",
+  "dependencies": {
+    "has-flag": "^2.0.0",
+    "perplexed": "^0.3.0",
+    "throat": "^3.0.0"
+  }
+}

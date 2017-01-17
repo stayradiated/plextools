@@ -6,8 +6,9 @@
   "author": "George Czabania <george@czabania.com>",
   "license": "MIT",
   "dependencies": {
+    "bluebird": "^3.4.7",
     "has-flag": "^2.0.0",
-    "perplexed": "^0.3.0",
+    "perplexed": "^1.4.1",
     "throat": "^3.0.0"
   }
 }

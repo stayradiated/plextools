@@ -90,13 +90,13 @@ node-fetch@^1.0.1:
     encoding "^0.1.11"
     is-stream "^1.0.1"
 
-normalizr@^3.0.2:
+normalizr@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/normalizr/-/normalizr-3.1.0.tgz#5a1eaa334d91b88d2bf7f3c33559e4ed16a56370"
 
-perplexed@^1.4.1:
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/perplexed/-/perplexed-1.4.1.tgz#f3c43cd22b037452a1d0c164c40eeb8c2c3e6f92"
+perplexed@^1.5.1:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/perplexed/-/perplexed-1.6.0.tgz#e319aafeaeb17d977351f1b30e41ee9cd2114c28"
   dependencies:
     assert "^1.4.1"
     deep-diff "^0.3.4"
@@ -104,7 +104,7 @@ perplexed@^1.4.1:
     es6-promisify "^5.0.0"
     isomorphic-base64 "^1.0.2"
     isomorphic-fetch "^2.2.1"
-    normalizr "^3.0.2"
+    normalizr "^3.1.0"
     qs "^6.3.0"
     uuid "^3.0.1"
     xml2js "^0.4.17"

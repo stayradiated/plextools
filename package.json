@@ -6,10 +6,14 @@
   "author": "George Czabania <george@czabania.com>",
   "license": "MIT",
   "dependencies": {
-    "bluebird": "^3.4.7",
+    "bluebird": "^3.5.1",
     "flags": "^0.1.3",
-    "has-flag": "^2.0.0",
-    "perplexed": "^1.5.1",
-    "throat": "^3.0.0"
+    "has-flag": "^3.0.0",
+    "perplexed": "^4.3.0",
+    "throat": "^4.1.0",
+    "yargs": "^11.0.0"
+  },
+  "scripts": {
+    "start": "node lib/cli.js"
   }
 }

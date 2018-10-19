@@ -6,8 +6,12 @@ mkdir -p files
 
 IFS=$'\n'
 
-for filepath in $(node lib/playlistSource.js)
+echo $1
+
+for filepath in $(./bin/plextools playlist-paths --playlist-id $1)
 do
+  echo $filepath
+
   filename=$(basename "${filepath%.*}")
   prefix=$(printf %03d $counter)
   outputPath="./files/$prefix. $filename.mp3"

@@ -10,17 +10,20 @@ echo $1
 
 for filepath in $(./bin/plextools playlist-paths --playlist-id $1)
 do
-  echo $filepath
-
   filename=$(basename "${filepath%.*}")
   prefix=$(printf %03d $counter)
+  outputPathRaw="./files/$prefix.mp3"
   outputPath="./files/$prefix. $filename.mp3"
 
-  echo $outputPath
+  input=$(echo $filepath | ./quotify)
+  echo $input
 
-  ffmpeg-normalize "$filepath" -nt peak -t 0 -c:a libmp3lame -b:a 320k -o $outputPath
+  scp -i ~/.ssh/sshkey george@192.168.1.200:"${input}" "${outputPathRaw}"
 
+  ffmpeg-normalize "$outputPathRaw" -nt peak -t 0 -c:a libmp3lame -b:a 320k -o $outputPath
+  rm $outputPathRaw
   let "counter++"
+
 done
 
 ls ./files |\

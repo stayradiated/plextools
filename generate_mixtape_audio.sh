@@ -23,13 +23,14 @@ do
   ffmpeg-normalize "$outputPathRaw" -nt peak -t 0 -c:a libmp3lame -b:a 320k -o $outputPath
   rm $outputPathRaw
   let "counter++"
-
 done
+
+rm -f files_concat_MP3WRAP.mp3
 
 ls ./files |\
   sed 's/^/".\/files\//' |\
   sed 's/$/"/' |\
   sed -s '0~1 s/$/\nsilence.mp3/' |\
-  xargs mp3wrap mixtape.mp3
+  xargs mp3wrap files_concat.mp3
 
-ffmpeg -i mixtape_MP3WRAP.mp3 -c:a libmp3lame -b:a 320k mixtape.mp3
+ffmpeg -i files_concat_MP3WRAP.mp3 -c:a libmp3lame -b:a 320k mixtape.mp3

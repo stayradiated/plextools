@@ -1,3 +1,4 @@
-#! /usr/bin/env node
+#!/usr/bin/env bash
+':' //; exec "$(command -v node)" "--no-warnings" "$0" "$@"
 
-require('../lib/cli')
+require('../dist/cli')

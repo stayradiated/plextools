@@ -1,29 +1,28 @@
-const {ServerConnection} = require('perplexed')
-const Promise = require('bluebird')
-const { timeout } = require('promise-timeout')
+import { Account, Device, ServerConnection, Connection } from 'perplexed'
 
-const getAccount = require('./getAccount')
+import getAccount from './getAccount'
 
 const SERVER = 'server'
 const TIMEOUT = 5 * 1000
 
-async function connect (account, server, connection) {
+async function connect (
+  account: Account,
+  server: Device,
+  connection: Connection,
+) {
   const serverConnection = new ServerConnection(connection.uri, account)
   const startTime = Date.now()
 
   try {
-    await timeout(
-      serverConnection.fetch('/', {
-        timeout: TIMEOUT
-      }),
-      TIMEOUT
-    )
+    await serverConnection.fetch('/', {
+      timeout: TIMEOUT,
+    })
   } catch (error) {
     return {
       connection,
       ping: Infinity,
       available: false,
-      server: server.id
+      server: server.id,
     }
   }
 
@@ -34,24 +33,24 @@ async function connect (account, server, connection) {
     available: true,
     ping,
     server: server.id,
-    serverConnection
+    serverConnection,
   }
 }
 
-async function connectMultiple (account, server, connections) {
+async function connectMultiple (
+  account: Account,
+  server: Device,
+  connections: Connection[],
+) {
   if (connections.length <= 0) {
     throw new Error('Must pass at least one connection')
   }
 
   const results = await Promise.all(
     connections.map(async (c, i) => {
-      const result = await connect(
-        account,
-        server,
-        c
-      )
+      const result = await connect(account, server, c)
       return result
-    })
+    }),
   )
 
   // sort by ping in ascending order
@@ -91,9 +90,11 @@ async function getServerConnection () {
     throw new Error(`Server ${server.name} is not available`)
   }
 
-  console.warn(`# Server ${server.name} is available at ${serverConnection.uri}`)
+  console.warn(
+    `# Server ${server.name} is available at ${serverConnection.uri}`,
+  )
 
   return serverConnection
 }
 
-module.exports = getServerConnection
+export default getServerConnection

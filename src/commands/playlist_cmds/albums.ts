@@ -1,16 +1,21 @@
-const {normalize} = require('perplexed')
+import { Library, normalize } from 'perplexed'
 
-const getLibrary = require('../utils/getLibrary')
+import getLibrary from '../../utils/getLibrary'
 
-exports.command = 'playlist <playlist-id> albums'
-exports.describe = 'List all album ids in a playlist'
-exports.builder = {
-  playlistId: {
-  }
+interface Options {
+  playlistId: number,
 }
 
-async function* getPlaylistTracks (library, id) {
-  const initialResult = await normalize(library.playlistTracks(id, {size: 50}))
+exports.command = 'albums <playlist-id>'
+exports.describe = 'List all album ids in a playlist'
+exports.builder = {
+  playlistId: {},
+}
+
+async function * getPlaylistTracks (library: Library, id: number) {
+  const initialResult = await normalize(
+    library.playlistTracks(id, { size: 50 }),
+  )
   let entities = initialResult.entities
 
   let count = 0
@@ -26,13 +31,14 @@ async function* getPlaylistTracks (library, id) {
       break
     }
 
-    const result = await normalize(library.playlistTracks(id, {start: count, size: 50}))
+    const result = await normalize(
+      library.playlistTracks(id, { start: count, size: 50 }),
+    )
     entities = result.entities
   }
-
 }
 
-exports.handler = async (argv) => {
+exports.handler = async (argv: Options) => {
   const { playlistId } = argv
 
   const library = await getLibrary()

@@ -1,9 +1,8 @@
-const getServerConnection = require('../utils/getServerConnection')
+import getServerConnection from '../utils/getServerConnection'
 
 async function listServers () {
   await getServerConnection()
 }
-
 
 exports.command = 'server list'
 exports.describe = 'List all available servers'

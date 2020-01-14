@@ -1,25 +1,33 @@
 {
-  "name": "plextools",
+  "name": "@stayradiated/plextools",
   "version": "1.0.0",
   "description": "Tools for dealing with a plex server",
-  "main": "index.js",
+  "main": "./dist/index.js",
   "author": "George Czabania <george@czabania.com>",
   "license": "MIT",
-  "dependencies": {
-    "bluebird": "^3.5.3",
-    "filenamify": "^3.0.0",
-    "flags": "^0.1.3",
-    "has-flag": "^3.0.0",
-    "node-fetch": "^2.3.0",
-    "perplexed": "^4.5.0",
-    "promise-timeout": "^1.3.0",
-    "throat": "^4.1.0",
-    "yargs": "^13.2.2"
-  },
   "scripts": {
-    "start": "./bin/plextools"
+    "build": "pkg-build",
+    "tidy": "pkg-tidy",
+    "lint": "pkg-lint",
+    "precommit": "pkg-precommit"
   },
   "bin": {
     "plextools": "./bin/plextools"
+  },
+  "dependencies": {
+    "@types/node": "12.12.24",
+    "filenamify": "^4.1.0",
+    "mem": "6.0.1",
+    "node-fetch": "^2.6.0",
+    "perplexed": "^5.17.0",
+    "promise-timeout": "^1.3.0",
+    "throat": "^5.0.0",
+    "yargs": "15.1.0"
+  },
+  "devDependencies": {
+    "@stayradiated/pkg": "3.11.0",
+    "@types/node-fetch": "2.5.4",
+    "@types/promise-timeout": "1.3.0",
+    "@types/yargs": "15.0.0"
   }
 }

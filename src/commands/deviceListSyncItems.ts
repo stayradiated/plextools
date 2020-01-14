@@ -1,15 +1,18 @@
-const getAccount = require('../utils/getAccount')
+import getAccount from '../utils/getAccount'
+
+interface Options {
+  deviceId: string,
+}
 
 exports.command = 'device-list-sync-items [device-id]'
 
 exports.describe = 'List all items that are syncing to a device'
 
 exports.builder = {
-  deviceId: {
-  }
+  deviceId: {},
 }
 
-exports.handler = async (argv) => {
+exports.handler = async (argv: Options) => {
   const { deviceId } = argv
 
   const account = await getAccount()
@@ -19,11 +22,17 @@ exports.handler = async (argv) => {
     const { id, metadataType, title, location } = item
     const { uri } = location
 
-    console.log(JSON.stringify({
-      id,
-      type: metadataType,
-      title,
-      uri
-    }, null, 2))
+    console.log(
+      JSON.stringify(
+        {
+          id,
+          type: metadataType,
+          title,
+          uri,
+        },
+        null,
+        2,
+      ),
+    )
   }
 }

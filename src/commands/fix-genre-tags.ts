@@ -1,7 +1,11 @@
 import { Library, Tag, MediaType } from 'perplexed'
 import throat from 'throat'
+import chalk from 'chalk'
 
 import getLibrary from '../utils/getLibrary'
+import getAllSectionItems from '../iterators/get-all-section-items'
+
+type SupportedMediaType = MediaType.ARTIST | MediaType.ALBUM
 
 interface LibraryItem {
   id: number,
@@ -12,17 +16,11 @@ exports.command = 'fix-genre-tags'
 
 exports.describe = 'Split combined genre tags into seperate genres'
 
-exports.builder = {}
-
-const getItems = (container: any, type: MediaType) => {
-  switch (type) {
-    case MediaType.ALBUM:
-      return container.albums
-    case MediaType.ARTIST:
-      return container.artists
-    default:
-      throw new Error(`Unsupported media type: ${type}`)
-  }
+exports.builder = {
+  'section-id': {
+    type: 'number',
+    default: 1,
+  },
 }
 
 const REPLACE = new Map([
@@ -34,7 +32,13 @@ const REPLACE = new Map([
   [/^Neo\s+/, 'Neo-'],
 ])
 
-const throttle = throat(10) // limit concurrent items
+const fmtId = (id: number) => {
+  return chalk.yellow(`[${id}]`)
+}
+
+const MAX_CONCURRENCY = 10
+
+const throttle = throat(MAX_CONCURRENCY) // limit concurrent items
 
 const cleanTags = (item: LibraryItem) => {
   const tagNames: string[] = item.genre.map((tag) => tag.tag)
@@ -72,58 +76,61 @@ const cleanTags = (item: LibraryItem) => {
 }
 
 async function saveTags (
-  lib: Library,
+  library: Library,
   sectionId: number,
-  type: MediaType,
+  mediaType: SupportedMediaType,
   item: LibraryItem,
   addTags: string[],
   removeTags: string[],
 ) {
   if (removeTags.length === 0) {
-    console.log(`${item.id}: no change required`)
+    console.log(`${fmtId(item.id)} ${chalk.magenta('no change required')}`)
     return
   }
 
-  console.log(`${item.id}: saving tags...`)
-  await lib.modifyGenre(sectionId, type, item.id, addTags, removeTags)
-  console.log(`${item.id}: ...saved!`)
+  console.log(`${fmtId(item.id)} ${chalk.green('saving tags...')}`)
+  await library.modifyGenre(sectionId, mediaType, item.id, addTags, removeTags)
+  console.log(`${fmtId(item.id)} ${chalk.greenBright('...saved!')}`)
 }
 
 async function cleanItem (
-  lib: Library,
+  library: Library,
   sectionId: number,
-  type: MediaType,
+  mediaType: SupportedMediaType,
   id: number,
 ) {
-  console.log(`${id}: fetching...`)
-  const container = await lib.metadata(id, type)
+  console.log(`${fmtId(id)} ${chalk.magenta('fetching...')}`)
+  const item = await library.typedMetadata(id, mediaType)
 
-  const items = getItems(container, type)
-  const item = items[0]
-
-  console.log(`${id}: ${item.title}`)
+  console.log(`${fmtId(id)} ${chalk.cyan(item.title)}`)
   const { addTags, removeTags } = cleanTags(item)
-  return saveTags(lib, sectionId, type, item, addTags, removeTags)
+  return saveTags(library, sectionId, mediaType, item, addTags, removeTags)
 }
 
 async function cleanAllItemsOfType (
-  lib: Library,
+  library: Library,
   sectionId: number,
-  type: MediaType,
+  mediaType: SupportedMediaType,
 ) {
-  console.log(`Fetching all items of type: ${type}`)
-  const container = await lib.sectionItems(sectionId, type)
-  const items = getItems(container, type)
-
-  return Promise.all(
-    items.map((item: LibraryItem) =>
-      throttle(() => cleanItem(lib, sectionId, type, item.id)),
-    ),
+  console.log(
+    chalk.magenta(`Fetching all items of type: ${MediaType[mediaType]}`),
   )
+  for await (const item of getAllSectionItems({
+    library,
+    sectionId,
+    mediaType,
+  })) {
+    throttle(() => cleanItem(library, sectionId, mediaType, item.id))
+  }
 }
 
-exports.handler = async () => {
-  const lib = await getLibrary()
-  await cleanAllItemsOfType(lib, 1, MediaType.ARTIST)
-  await cleanAllItemsOfType(lib, 1, MediaType.ALBUM)
+interface Options {
+  sectionId: number,
+}
+
+exports.handler = async (argv: Options) => {
+  const { sectionId } = argv
+  const library = await getLibrary()
+  await cleanAllItemsOfType(library, sectionId, MediaType.ARTIST)
+  await cleanAllItemsOfType(library, sectionId, MediaType.ALBUM)
 }

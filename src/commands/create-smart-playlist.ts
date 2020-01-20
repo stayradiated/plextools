@@ -17,12 +17,12 @@ export const builder = {
   },
   ratings: {
     type: 'array',
-    required: true
+    required: true,
   },
   sectionId: {
     type: 'number',
-    default: 1
-  }
+    default: 1,
+  },
 }
 
 export const handler = async (argv: Options) => {
@@ -32,11 +32,15 @@ export const handler = async (argv: Options) => {
   const { sections } = await library.sections()
   const { uuid } = sections[0]
 
-  const uri = library.buildLibraryURI(uuid, `/library/sections/${sectionId}/all`, {
-    userRating: ratings.join(','),
-    sort: 'addedAt:desc',
-    sourceType: 10,
-  })
+  const uri = library.buildLibraryURI(
+    uuid,
+    `/library/sections/${sectionId}/all`,
+    {
+      userRating: ratings.join(','),
+      sort: 'addedAt:desc',
+      sourceType: 10,
+    },
+  )
 
   const result = await library.createSmartPlaylist(name, uri)
   const playlist = result.playlists[0]

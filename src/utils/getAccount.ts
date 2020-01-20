@@ -1,6 +1,7 @@
 import mem from 'mem'
 import { Client, Account } from 'perplexed'
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const config = require('../../config.json')
 
 const getAccount = mem(

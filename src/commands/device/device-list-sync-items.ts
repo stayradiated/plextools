@@ -1,4 +1,4 @@
-import getAccount from '../utils/getAccount'
+import getAccount from '../../utils/getAccount'
 
 interface Options {
   deviceId: string,

@@ -15,27 +15,27 @@
     "plextools": "./bin/plextools"
   },
   "dependencies": {
-    "@msgpack/msgpack": "1.11.0",
+    "@msgpack/msgpack": "1.12.0",
     "chalk": "3.0.0",
-    "cli-progress": "3.5.0",
+    "cli-progress": "3.6.0",
     "filenamify": "^4.1.0",
-    "luxon": "1.21.3",
+    "luxon": "1.22.0",
     "mem": "6.0.1",
     "node-fetch": "^2.6.0",
     "ora": "4.0.3",
-    "perplexed": "^5.18.0",
+    "perplexed": "^5.21.0",
     "promise-timeout": "^1.3.0",
-    "term-size": "2.1.1",
+    "term-size": "2.2.0",
     "throat": "5.0.0",
     "yargs": "15.1.0"
   },
   "devDependencies": {
-    "@stayradiated/pkg": "3.11.0",
-    "@types/cli-progress": "3.4.1",
+    "@stayradiated/pkg": "4.2.0",
+    "@types/cli-progress": "3.4.2",
     "@types/luxon": "1.21.0",
-    "@types/node": "12.12.24",
-    "@types/node-fetch": "2.5.4",
+    "@types/node": "13.7.7",
+    "@types/node-fetch": "2.5.5",
     "@types/promise-timeout": "1.3.0",
-    "@types/yargs": "15.0.0"
+    "@types/yargs": "15.0.4"
   }
 }

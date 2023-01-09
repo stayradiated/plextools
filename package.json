@@ -19,7 +19,7 @@
     "chalk": "3.0.0",
     "cli-progress": "3.6.0",
     "filenamify": "^4.1.0",
-    "luxon": "1.22.0",
+    "luxon": "1.28.1",
     "mem": "6.0.1",
     "node-fetch": "^2.6.0",
     "ora": "4.0.3",
